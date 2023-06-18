@@ -1,0 +1,11 @@
+.link {
+  margin-right: 20px;
+}
+
+.linkWrapper {
+  margin-left: 350px;
+}
+
+.active {
+  color: rgb(33, 168, 144);
+}
