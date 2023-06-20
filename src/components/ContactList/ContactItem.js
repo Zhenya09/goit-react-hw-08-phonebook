@@ -6,10 +6,15 @@ import style from './ContactList.module.css';
 
 const ContactItem = ({ id, name, number }) => {
   const dispatch = useDispatch();
+
+  const handleDeleteClick = () => {
+    dispatch(deleteContact(id));
+  };
+
   return (
     <li className={style.item}>
       {name} : {number}
-      <button className={style.btn} onClick={() => dispatch(deleteContact(id))}>
+      <button className={style.btn} onClick={handleDeleteClick}>
         Delete
       </button>
     </li>
@@ -17,14 +22,9 @@ const ContactItem = ({ id, name, number }) => {
 };
 
 ContactItem.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  handleDeleteClick: PropTypes.func,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string,
 };
 
 export default ContactItem;

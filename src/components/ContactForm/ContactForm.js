@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/operations';
 import style from './ContactForm.module.css';
@@ -28,13 +27,9 @@ const ContactForm = () => {
           phone: phone,
         })
       );
-      event.target.reset(
-        setName &&
-          setNumber({
-            name: '',
-            phone: '',
-          })
-      );
+      event.target.reset();
+      setName('');
+      setNumber('');
     }
   };
 
@@ -65,10 +60,6 @@ const ContactForm = () => {
       </button>
     </form>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func,
 };
 
 export default ContactForm;

@@ -1,6 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import * as api from 'services/auth';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://goit-task-manager.herokuapp.com/';
+
+// Utility to add JWT
+const setAuthHeader = token => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+};
 
 export const signup = createAsyncThunk(
   'auth/signup',
@@ -63,5 +71,25 @@ export const current = createAsyncThunk(
         return false;
       }
     },
+  }
+);
+
+export const refreshUser = createAsyncThunk(
+  'auth/refresh',
+  async (_, thunkAPI) => {
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+
+    if (persistedToken === null) {
+      return thunkAPI.rejectWithValue('Unable to fetch user');
+    }
+
+    try {
+      setAuthHeader(persistedToken);
+      const res = await axios.get('/users/me');
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
 );

@@ -1,7 +1,6 @@
 import React from 'react';
 import ContactItem from '../ContactList/ContactItem';
 import Loader from 'components/Loader/Loader';
-import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import style from './ContactList.module.css';
 import {
@@ -32,7 +31,7 @@ const ContactList = () => {
     }
 
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filterValue)
+      contact.name.toLowerCase().includes(filterValue.toLowerCase())
     );
   };
 
@@ -46,21 +45,11 @@ const ContactList = () => {
           id={contact.id}
           key={contact.id}
           name={contact.name}
-          number={contact.phone}
+          number={contact.number}
         />
       ))}
     </ul>
   );
-};
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
 };
 
 export default ContactList;
