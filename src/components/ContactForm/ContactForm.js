@@ -6,7 +6,7 @@ import { getContacts } from 'redux/selectors';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
-  const [phone, setNumber] = useState('');
+  const [number, setNumber] = useState('');
   const contacts = useSelector(getContacts);
 
   const dispatch = useDispatch();
@@ -20,11 +20,11 @@ const ContactForm = () => {
     if (findName) {
       return alert(`${name} is already in contacts.`);
     }
-    if (name && phone) {
+    if (name && number) {
       dispatch(
         addContact({
-          name: name,
-          phone: phone,
+          name,
+          number,
         })
       );
       event.target.reset();
