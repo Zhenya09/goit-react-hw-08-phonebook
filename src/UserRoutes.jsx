@@ -22,7 +22,6 @@ const UserRoutes = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/contacts" element={<ContactPage />} />
         </Route>
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>
     </Suspense>
   );

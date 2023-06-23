@@ -4,13 +4,12 @@ import style from './App.module.css';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { current, refreshUser } from 'redux/auth/auth-operations';
+import { refreshUser } from 'redux/auth/auth-operations';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(current());
     dispatch(refreshUser());
   }, [dispatch]);
 

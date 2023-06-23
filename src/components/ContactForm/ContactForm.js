@@ -8,7 +8,6 @@ const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const contacts = useSelector(getContacts);
-
   const dispatch = useDispatch();
 
   const onSubmit = event => {
@@ -17,16 +16,13 @@ const ContactForm = () => {
     const findName = contacts.find(
       contact => contact.name.toLowerCase() === normalizedFind
     );
+
     if (findName) {
       return alert(`${name} is already in contacts.`);
     }
+
     if (name && number) {
-      dispatch(
-        addContact({
-          name,
-          number,
-        })
-      );
+      dispatch(addContact({ name, number }));
       event.target.reset();
       setName('');
       setNumber('');

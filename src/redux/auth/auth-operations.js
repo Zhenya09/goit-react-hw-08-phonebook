@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import * as api from 'services/auth';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
@@ -9,16 +8,19 @@ axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
 const setAuthHeader = token => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
+const clearAuthHeader = () => {
+  axios.defaults.headers.common.Authorization = '';
+};
 
 export const signup = createAsyncThunk(
   'auth/signup',
   async (data, { rejectWithValue }) => {
     try {
-      const result = await api.register(data);
-      return result;
+      const res = await axios.post('/users/signup', data);
+      setAuthHeader(res.data.token);
+      return res.data;
     } catch (error) {
-      const { data, status } = error.response;
-      return rejectWithValue({ data, status });
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -27,11 +29,11 @@ export const login = createAsyncThunk(
   'auth/login',
   async (data, { rejectWithValue }) => {
     try {
-      const result = await api.login(data);
-      return result;
+      const res = await axios.post('users/login', data);
+      setAuthHeader(res.data.token);
+      return res.data;
     } catch (error) {
-      const { data, status } = error.response;
-      return rejectWithValue({ data, status });
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -40,37 +42,11 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      const result = await api.logout();
-      return result;
+      await axios.post('/users/logout');
+      clearAuthHeader();
     } catch (error) {
-      const { data, status } = error.response;
-      return rejectWithValue({ data, status });
+      return rejectWithValue(error.message);
     }
-  }
-);
-
-export const current = createAsyncThunk(
-  'auth/current',
-  async (_, { rejectWithValue, getState }) => {
-    try {
-      const { auth } = getState();
-      const result = await api.getCurrent(auth.token);
-      return result;
-    } catch ({ response }) {
-      const error = {
-        status: response.status,
-        message: response.data.message,
-      };
-      return rejectWithValue(error);
-    }
-  },
-  {
-    condition: (_, { getState }) => {
-      const { auth } = getState();
-      if (!auth.token) {
-        return false;
-      }
-    },
   }
 );
 
